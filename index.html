@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#6a0dad">
+  
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hurdle Spacing Calculator</title>
@@ -17,6 +21,15 @@
   footer { text-align:center; padding:1rem; font-size:0.8rem; color:#aaa;}
 </style>
 </head>
+  
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js')
+    .then(() => console.log('Service Worker registered'))
+    .catch(err => console.log('Service Worker registration failed:', err));
+}
+</script>
+
 <body>
 <header>Hurdle Spacing Calculator</header>
 <main>
@@ -125,3 +138,4 @@ Average Step Between Hurdles: ${avgStep.toFixed(1)} ft
 </script>
 </body>
 </html>
+
