@@ -1,175 +1,105 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hurdle Spacing Calculator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f7f9fc;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
-    header {
-      background: #4a90e2;
-      color: white;
-      width: 100%;
-      padding: 1rem;
-      text-align: center;
-      font-size: 1.2rem;
-      font-weight: bold;
-    }
-    main {
-      flex: 1;
-      width: 100%;
-      max-width: 600px;
-      padding: 1rem;
-    }
-    .card {
-      background: white;
-      padding: 1.5rem;
-      margin-bottom: 1rem;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    label {
-      display: block;
-      margin: 0.5rem 0 0.2rem;
-    }
-    select, input {
-      width: 100%;
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      margin-bottom: 0.5rem;
-    }
-    button {
-      background: #4a90e2;
-      color: white;
-      border: none;
-      padding: 0.7rem 1.2rem;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #3a78c2;
-    }
-    .result {
-      font-size: 1.2rem;
-      font-weight: bold;
-      margin-top: 1rem;
-    }
-    footer {
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.8rem;
-      color: #666;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hurdle Spacing Calculator</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #f7f9fc; margin:0; padding:0; display:flex; flex-direction:column; align-items:center; min-height:100vh;}
+  header { background: #4a90e2; color: white; width:100%; padding:1rem; text-align:center; font-size:1.2rem; font-weight:bold; }
+  main { flex:1; width:100%; max-width:600px; padding:1rem; }
+  .card { background:white; padding:1.5rem; margin-bottom:1rem; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+  label { display:block; margin:0.5rem 0 0.2rem;}
+  select, input { width:100%; padding:0.5rem; border:1px solid #ccc; border-radius:6px; margin-bottom:0.5rem;}
+  button { background:#4a90e2; color:white; border:none; padding:0.7rem 1.2rem; border-radius:8px; font-size:1rem; cursor:pointer;}
+  button:hover { background:#3a78c2;}
+  .result { font-size:1.2rem; font-weight:bold; margin-top:1rem; }
+  footer { text-align:center; padding:1rem; font-size:0.8rem; color:#666;}
+</style>
 </head>
 <body>
-  <header>
-    Hurdle Spacing Calculator
-  </header>
-  <main>
-    <div class="card">
-      <label for="mode">Mode:</label>
-      <select id="mode">
-        <option value="spacing">Calculate Spacing (ft) from Speed %</option>
-        <option value="speed">Calculate Speed % from Spacing</option>
-      </select>
+<header>Hurdle Spacing Calculator</header>
+<main>
+  <div class="card">
+    <label for="group">Group:</label>
+    <select id="group">
+      <option value="men">Men</option>
+      <option value="women">Women</option>
+    </select>
 
-      <label for="group">Group:</label>
-      <select id="group">
-        <option value="men">Men</option>
-        <option value="women">Women</option>
-      </select>
+    <label for="steps">Steps between hurdles (2–9):</label>
+    <input type="number" id="steps" min="2" max="9" value="3">
 
-      <label for="steps">Steps between hurdles:</label>
-      <select id="steps">
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-      </select>
+    <label for="speed">Speed (%):</label>
+    <input type="number" id="speed" min="10" max="120" value="100">
 
-      <div id="speed-input">
-        <label for="speed">Speed (%):</label>
-        <input type="number" id="speed" min="10" max="120" value="100">
-      </div>
+    <button onclick="calculate()">Calculate</button>
+    <div class="result" id="result"></div>
+  </div>
+</main>
+<footer>Built for hurdle drill planning 🏃‍♂️</footer>
 
-      <div id="spacing-input" style="display:none;">
-        <label for="spacing">Spacing (ft):</label>
-        <input type="number" id="spacing" min="10" max="60" value="30">
-      </div>
+<script>
+// Anchor points: step count at 100% speed
+const anchors = {
+  men: {
+    3: 30,
+    4: 30, // at 80%
+    5: 41, // at 100%
+    7: 55
+  },
+  women: {
+    3: 28,
+    4: 28,
+    5: 37,
+    7: 49
+  }
+};
 
-      <button onclick="calculate()">Calculate</button>
-      <div class="result" id="result"></div>
-    </div>
-  </main>
-  <footer>
-    Built for hurdle drill planning 🏃‍♂️
-  </footer>
+// Hurdle step at 100% speed for each group (approx, can tweak)
+const hurdleStep100 = { men: 6, women: 5 };
 
-  <script>
-    // Reference calibration points
-    const baseData = {
-      men: { race: 30, fiveStep: 41, racePercentFive: 60, fourStepPercent: 80 },
-      women: { race: 28, fiveStep: 38, racePercentFive: 60, fourStepPercent: 80 }
-    };
+function interpolateStepSpacing(group, steps) {
+  const keys = Object.keys(anchors[group]).map(Number).sort((a,b)=>a-b);
+  if (anchors[group][steps]) return anchors[group][steps]; // exact anchor
+  // find nearest lower and upper anchors
+  let lower = keys[0], upper = keys[keys.length-1];
+  for (let i=0;i<keys.length;i++){
+    if (keys[i]<steps) lower=keys[i];
+    if (keys[i]>steps){upper=keys[i]; break;}
+  }
+  // linear interpolation
+  const y0 = anchors[group][lower], y1 = anchors[group][upper];
+  const x0 = lower, x1 = upper;
+  const spacing = y0 + (y1 - y0) * (steps - x0)/(x1 - x0);
+  return spacing;
+}
 
-    document.getElementById('mode').addEventListener('change', function() {
-      if (this.value === 'spacing') {
-        document.getElementById('speed-input').style.display = 'block';
-        document.getElementById('spacing-input').style.display = 'none';
-      } else {
-        document.getElementById('speed-input').style.display = 'none';
-        document.getElementById('spacing-input').style.display = 'block';
-      }
-    });
+function calculate() {
+  const group = document.getElementById('group').value;
+  let steps = parseInt(document.getElementById('steps').value);
+  steps = Math.max(2, Math.min(9, steps)); // clamp 2-9
+  const speedPercent = parseFloat(document.getElementById('speed').value);
+  
+  // total spacing at 100% speed
+  const spacing100 = interpolateStepSpacing(group, steps);
+  // scale hurdle step by speed
+  const hurdleStep = hurdleStep100[group]*(speedPercent/100);
+  // number of steps excluding hurdle step
+  const interSteps = steps - 1;
+  // compute total spacing proportionally
+  const totalSpacing = hurdleStep + interSteps * ((spacing100 - hurdleStep100[group]) * (speedPercent/100) / (steps - 1));
+  // compute average inter-step length
+  const avgStep = interSteps>0 ? (totalSpacing - hurdleStep)/interSteps : 0;
 
-    function calculate() {
-      const mode = document.getElementById('mode').value;
-      const group = document.getElementById('group').value;
-      const steps = parseInt(document.getElementById('steps').value);
-      const data = baseData[group];
-      let output = '';
-
-      if (mode === 'spacing') {
-        const speed = parseFloat(document.getElementById('speed').value) / 100;
-        let spacing;
-
-        if (steps === 3) {
-          spacing = data.race * speed; 
-        } else if (steps === 4) {
-          spacing = (data.race * (data.fourStepPercent/100)) + (speed - 0.8) * (data.fiveStep - data.race * (data.fourStepPercent/100)) / (0.6 - 0.8);
-        } else if (steps === 5) {
-          spacing = data.fiveStep * speed / (data.racePercentFive/100);
-        }
-
-        output = `Recommended Spacing: ${spacing.toFixed(1)} ft`;
-      } else {
-        const spacing = parseFloat(document.getElementById('spacing').value);
-        let percent;
-
-        if (steps === 3) {
-          percent = spacing / data.race;
-        } else if (steps === 4) {
-          percent = (spacing - data.race * (data.fourStepPercent/100)) / ((data.fiveStep) - (data.race * (data.fourStepPercent/100))) * (0.6 - 0.8) + 0.8;
-        } else if (steps === 5) {
-          percent = spacing / data.fiveStep * (data.racePercentFive/100);
-        }
-
-        output = `Estimated Speed: ${(percent*100).toFixed(0)}%`;
-      }
-
-      document.getElementById('result').innerText = output;
-    }
-  </script>
+  const output = `
+    Recommended Spacing: ${totalSpacing.toFixed(1)} ft
+    Hurdle Step: ${hurdleStep.toFixed(1)} ft
+    Average Step Between Hurdles: ${avgStep.toFixed(1)} ft
+  `;
+  document.getElementById('result').innerText = output;
+}
+</script>
 </body>
 </html>
