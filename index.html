@@ -1,142 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#6a0dad">
-  
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hurdle Spacing Calculator</title>
-<style>
-  body { font-family: Arial, sans-serif; background:#121212; color:#eee; margin:0; padding:0; display:flex; flex-direction:column; align-items:center; min-height:100vh;}
-  header { background:#6a0dad; color:white; width:100%; padding:1rem; text-align:center; font-size:1.3rem; font-weight:bold; }
-  main { flex:1; width:100%; max-width:600px; padding:1rem; }
-  .card { background:#1e1e1e; padding:1.5rem; margin-bottom:1rem; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.5);}
-  label { display:block; margin:0.5rem 0 0.2rem;}
-  select { width:100%; padding:0.5rem; border:1px solid #6a0dad; border-radius:6px; margin-bottom:0.5rem; background:#2a2a2a; color:#eee;}
-  button { background:#6a0dad; color:white; border:none; padding:0.7rem 1.2rem; border-radius:8px; font-size:1rem; cursor:pointer; margin-top:0.5rem;}
-  button:hover { background:#7e2cd6;}
-  .result { font-size:1.2rem; font-weight:bold; margin-top:1rem; white-space:pre-line; }
-  footer { text-align:center; padding:1rem; font-size:0.8rem; color:#aaa;}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hurdle Spacing Calculator</title>
+
+  <!-- Manifest & Theme setup for PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#6a0dad">
+
+  <!-- Simple Dark Theme Styling -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212; /* Dark background */
+      color: #eee;              /* Light text */
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #bb86fc; /* Purple accent for headers */
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-size: 1.1em;
+    }
+    select {
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 5px;
+      background-color: #1e1e1e;
+      color: #eee;
+      border: 1px solid #6a0dad;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 10px;
+      background-color: #6a0dad;
+      color: white;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #8a2be2;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 1.4em;
+      font-weight: bold;
+      color: #bb86fc;
+    }
+  </style>
 </head>
-  
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js')
-    .then(() => console.log('Service Worker registered'))
-    .catch(err => console.log('Service Worker registration failed:', err));
-}
-</script>
-
 <body>
-<header>Hurdle Spacing Calculator</header>
-<main>
-  <div class="card">
-    <label for="group">Group:</label>
-    <select id="group">
-      <option value="men">Men</option>
-      <option value="women">Women</option>
-    </select>
+  <h1>Hurdle Spacing Calculator</h1>
 
-    <label for="steps">Steps between hurdles:</label>
-    <select id="steps">
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3" selected>3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-      <option value="6">6</option>
-      <option value="7">7</option>
-    </select>
+  <!-- Step count dropdown -->
+  <label for="steps">Number of Steps Between Hurdles:</label>
+  <select id="steps">
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+    <option value="9">9</option>
+  </select>
 
-    <label for="speed">Hurdle spacing / speed:</label>
-    <select id="speed">
-      <option value="60">60%</option>
-      <option value="70">70%</option>
-      <option value="80">80%</option>
-      <option value="90">90%</option>
-      <option value="100" selected>100%</option>
-    </select>
+  <!-- Speed dropdown -->
+  <label for="speed">Speed (% of race pace):</label>
+  <select id="speed">
+    <option value="0.6">60%</option>
+    <option value="0.7">70%</option>
+    <option value="0.8">80%</option>
+    <option value="0.9">90%</option>
+    <option value="1.0">100%</option>
+  </select>
 
-    <button onclick="calculate()">Calculate</button>
-    <div class="result" id="result"></div>
-  </div>
-</main>
-<footer>Built for hurdle drill planning 🏃‍♂️</footer>
+  <!-- Gender dropdown -->
+  <label for="gender">Gender:</label>
+  <select id="gender">
+    <option value="men">Men</option>
+    <option value="women">Women</option>
+  </select>
 
-<script>
-// Anchors: step count at 100% speed
-const anchors = {
-  men: {3:30, 4:35.5, 5:41, 6:48, 7:55},
-  women: {3:28,4:28,5:37,7:49}
-};
+  <br>
+  <button onclick="calculateSpacing()">Calculate Spacing</button>
 
-// Hurdle step at 100% speed for each group
-const hurdleStep100 = { men: 8, women:7 };
+  <!-- Output -->
+  <div id="result"></div>
 
-// Interpolation function
-function interpolate(x0,y0,x1,y1,x){
-  return y0 + (y1 - y0)*(x - x0)/(x1 - x0);
-}
+  <script>
+    /*
+     ===============================
+     HURDLE SPACING MATH ENGINE
+     ===============================
 
-// Step interpolation at 100% speed
-function interpolateStep(group, steps){
-  const keys = Object.keys(anchors[group]).map(Number).sort((a,b)=>a-b);
-  if (anchors[group][steps]) return anchors[group][steps];
-  let lower=keys[0], upper=keys[keys.length-1];
-  for(let i=0;i<keys.length;i++){
-    if(keys[i]<steps) lower=keys[i];
-    if(keys[i]>steps){ upper=keys[i]; break;}
-  }
-  return interpolate(lower,anchors[group][lower], upper, anchors[group][upper], steps);
-}
+     This section is the core logic that determines the hurdle spacing
+     based on:
+       - Number of steps
+       - Speed (% of race pace)
+       - Gender (men/women)
 
-// Speed interpolation
-function spacingAtSpeed(spacing100, stepCount, speedPercent, group){
-  // determine anchor spacings at 60% and 100%
-  let lowerSpeed=60, upperSpeed=100;
-  let spacingLow, spacingHigh=spacing100;
-  // approximate lower speed spacing based on your reference anchors
-  // 60% spacing for 5 steps = anchor value at 60% (e.g., Men: 5 steps at 60% = 30)
-  const lowSpeedAnchors = {
-    men:{3:18,4:22,5:30,7:33},
-    women:{3:17,4:21,5:28,7:34}
-  };
-  // clamp steps within lowSpeedAnchors
-  const keys = Object.keys(lowSpeedAnchors[group]).map(Number).sort((a,b)=>a-b);
-  let lower=keys[0], upper=keys[keys.length-1];
-  for(let i=0;i<keys.length;i++){
-    if(keys[i]<=stepCount) lower=keys[i];
-    if(keys[i]>=stepCount){ upper=keys[i]; break;}
-  }
-  spacingLow = interpolate(lower, lowSpeedAnchors[group][lower], upper, lowSpeedAnchors[group][upper], stepCount);
-  // linear interpolate based on selected speed
-  return interpolate(lowerSpeed, spacingLow, upperSpeed, spacingHigh, speedPercent);
-}
+     You can edit the math here without touching the dropdowns or styling.
+    */
 
-function calculate(){
-  const group = document.getElementById('group').value;
-  const steps = parseInt(document.getElementById('steps').value);
-  const speedPercent = parseInt(document.getElementById('speed').value);
+    function calculateSpacing() {
+      const steps = parseInt(document.getElementById("steps").value);
+      const speed = parseFloat(document.getElementById("speed").value);
+      const gender = document.getElementById("gender").value;
 
-  const spacing100 = interpolateStep(group, steps);
-  const totalSpacing = spacingAtSpeed(spacing100, steps, speedPercent, group);
+      // ---------------------------
+      // 1. Base Reference Anchors
+      // ---------------------------
+      // These are the "known" distances at 100% speed (race pace).
+      // Adjust hurdleStep if you want to tweak how much space is
+      // consumed by the hurdle clearance itself.
+      let baseSpacing, hurdleStep;
+      if (gender === "men") {
+        baseSpacing = 30;   // 3-step at 100% speed
+        hurdleStep = 8;     // hurdle clearance (adjustable)
+      } else {
+        baseSpacing = 28;   // women
+        hurdleStep = 7;
+      }
 
-  const hurdleStep = hurdleStep100[group]*(speedPercent/100);
-  const interSteps = steps-1;
-  const avgStep = interSteps>0 ? (totalSpacing - hurdleStep)/interSteps : 0;
+      // ---------------------------
+      // 2. Calculate stride length
+      // ---------------------------
+      // Effective running space = hurdle spacing - hurdle step.
+      // Stride length = that space divided by # of steps.
+      let strideLength = (baseSpacing - hurdleStep) / 3; // stride @ 100% for 3-step
 
-  const output = `
-Recommended Spacing: ${totalSpacing.toFixed(1)} ft
-Hurdle Step: ${hurdleStep.toFixed(1)} ft
-Average Step Between Hurdles: ${avgStep.toFixed(1)} ft
-  `;
-  document.getElementById('result').innerText = output;
-}
-</script>
+      // ---------------------------
+      // 3. Scale stride with speed
+      // ---------------------------
+      // Assume stride length scales linearly with speed %.
+      let scaledStride = strideLength * (speed / 1.0);
+
+      // ---------------------------
+      // 4. Rebuild hurdle spacing
+      // ---------------------------
+      // For N steps: total spacing = hurdle step + stride * steps.
+      let spacing = hurdleStep + scaledStride * steps;
+
+      // Round nicely
+      spacing = spacing.toFixed(1);
+
+      // Display result
+      document.getElementById("result").innerText =
+        `Recommended spacing: ${spacing} ft`;
+    }
+
+    // ---------------------------
+    // 5. Service Worker Registration
+    // ---------------------------
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js')
+        .then(() => console.log('Service Worker registered'))
+        .catch(err => console.log('SW registration failed:', err));
+    }
+  </script>
 </body>
 </html>
-
-
