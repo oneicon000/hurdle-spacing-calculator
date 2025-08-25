@@ -35,9 +35,14 @@ function calculateSpacing() {
   let scaledStride = strideLength * speed;
 
   // ---------------------------
-  // 4. Rebuild hurdle spacing
+  // 4. Scale hurdle step with speed
   // ---------------------------
-  let spacing = hurdleStep + scaledStride * steps;
+  let scaledHurdleStep = hurdleStep * speed;
+
+  // ---------------------------
+  // 5. Rebuild hurdle spacing
+  // ---------------------------
+  let spacing = scaledHurdleStep + (scaledStride * steps);
 
   // Round nicely
   spacing = spacing.toFixed(1);
@@ -60,3 +65,4 @@ function calculateSpacing() {
   document.getElementById("result").innerText =
     `Recommended spacing: ${spacing} ft`;
 }
+
