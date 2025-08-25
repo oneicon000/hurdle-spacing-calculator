@@ -1,4 +1,6 @@
 /* General dark theme */
+* { box-sizing: border-box; }
+
 body {
   background: #1e1e2f;
   color: white;
@@ -8,7 +10,7 @@ body {
 }
 
 .container {
-  max-width: 500px;
+  max-width: 540px;
   margin: 2rem auto;
   padding: 2rem;
   background: #2a2a3d;
@@ -19,18 +21,23 @@ body {
 
 h1 {
   margin-bottom: 1rem;
-  color: purple;
+  color: #bb86fc; /* purple accent */
 }
 
 label {
   display: block;
   margin-top: 1rem;
   font-weight: bold;
+  text-align: left;
+}
+
+select, .btn {
+  display: block;       /* stack vertically */
+  width: 100%;          /* full width */
 }
 
 select {
-  width: 100%;
-  padding: 0.5rem;
+  padding: 0.6rem;
   margin-top: 0.5rem;
   border-radius: 8px;
   border: 1px solid purple;
@@ -70,7 +77,7 @@ select {
 
 /* Table styles */
 table {
-  margin: 2rem auto;
+  margin: 2rem auto 0 auto;
   border-collapse: collapse;
   width: 100%;
   background: #1e1e2f;
@@ -88,7 +95,7 @@ th {
 }
 
 .gender-toggle {
-  margin: 1rem 0;
+  margin: 1rem 0 0.5rem 0;
   display: flex;
   justify-content: center;
   gap: 1rem;
