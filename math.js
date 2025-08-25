@@ -22,10 +22,10 @@ function calculateSpacing(gender, steps, speed) {
   let baseSpacing, hurdleStep;
   if (gender === "men") {
     baseSpacing = 30;   // base 3-step spacing at 100%
-    hurdleStep = 8;     // hurdle clearance distance
+    hurdleStep = 9;     // hurdle clearance distance
   } else {
     baseSpacing = 28;
-    hurdleStep = 7;
+    hurdleStep = 8;
   }
 
   // Stride length at 100% (for 3-step pattern)
@@ -126,6 +126,7 @@ window.runCalculator = runCalculator;
 window.generateTable = generateTable;
 window.setTableGender = setTableGender;
 window.calculateSpacing = calculateSpacing; // handy for console testing
+
 
 
 
