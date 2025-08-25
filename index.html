@@ -4,8 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Hurdle Spacing Calculator</title>
+
+  <!-- PWA (keep if you already have manifest/sw.js) -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#6a0dad">
+
   <link rel="stylesheet" href="style.css" />
   <script src="math.js" defer></script>
+  <script src="app.js" defer></script>
 </head>
 <body>
   <div class="container">
@@ -40,7 +46,6 @@
 
     <div id="result" class="result-box"></div>
 
-    <!-- Button to go to tables page -->
     <button onclick="window.location.href='tables.html'" class="btn secondary">
       Show Tables
     </button>
