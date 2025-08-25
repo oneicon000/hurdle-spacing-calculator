@@ -1,0 +1,49 @@
+/* Dark Theme Styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #121212; /* Dark background */
+  color: #eee;              /* Light text */
+  text-align: center;
+  padding: 20px;
+}
+
+h1 {
+  color: #bb86fc; /* Purple accent for headers */
+}
+
+label {
+  display: block;
+  margin-top: 15px;
+  font-size: 1.1em;
+}
+
+select {
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 5px;
+  background-color: #1e1e1e;
+  color: #eee;
+  border: 1px solid #6a0dad;
+}
+
+button {
+  margin-top: 20px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  background-color: #6a0dad;
+  color: white;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #8a2be2;
+}
+
+#result {
+  margin-top: 20px;
+  font-size: 1.4em;
+  font-weight: bold;
+  color: #bb86fc;
+}
