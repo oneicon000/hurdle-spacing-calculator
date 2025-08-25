@@ -51,12 +51,20 @@
   <!-- Output -->
   <div id="result"></div>
 
-    <!-- Add this below your calculator section -->
+  <!-- for the table view-->
   <section class="table-section">
     <h2>Spacing Tables</h2>
+  
+    <!-- Gender toggle just for table view -->
+    <div class="gender-toggle">
+      <button id="men-btn" class="toggle-btn active" onclick="setTableGender('men')">Men</button>
+      <button id="women-btn" class="toggle-btn" onclick="setTableGender('women')">Women</button>
+    </div>
+  
     <button onclick="generateTable()" class="btn">Show Tables</button>
     <div id="tables-container"></div>
   </section>
+  <!-- for the table view-->
 
 
   <!-- Scripts -->
@@ -64,4 +72,5 @@
   <script src="app.js"></script>
 </body>
 </html>
+
 
