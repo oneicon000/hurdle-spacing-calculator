@@ -37,11 +37,14 @@ function calculateSpacing(gender, steps, speed) {
   // (currently not scaling hurdle step – but could adjust here later)
   let scaledHurdleStep = hurdleStep;
 
+  // Recommended Spacing
+  let spacing = scaledHurdleStep + (scaledStride * steps)
+ 
   // See the console (inspect) in the browser
-  console.log({gender, steps, speed, hurdleStep, stride100, stride, total});
+  console.log({gender, steps, speed, scaledHurdleStep, scaledStride, spacing});
  
   // Final spacing formula
-  return scaledHurdleStep + (scaledStride * steps);
+  return spacing;
 }
 
 // ----------------------------------------------------
@@ -123,4 +126,5 @@ window.runCalculator = runCalculator;
 window.generateTable = generateTable;
 window.setTableGender = setTableGender;
 window.calculateSpacing = calculateSpacing; // handy for console testing
+
 
