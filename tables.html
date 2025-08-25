@@ -4,26 +4,41 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Hurdle Spacing Tables</title>
+
+  <!-- PWA (optional) -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#6a0dad">
+
   <link rel="stylesheet" href="style.css" />
   <script src="math.js" defer></script>
+  <script src="app.js" defer></script>
 </head>
-<body onload="generateTable()">
+<body>
   <div class="container">
     <h1>Hurdle Spacing Tables</h1>
 
-    <!-- Gender toggle -->
+    <!-- Gender toggle just for the tables page -->
     <div class="gender-toggle">
       <button id="men-btn" class="toggle-btn active" onclick="setTableGender('men')">Men</button>
       <button id="women-btn" class="toggle-btn" onclick="setTableGender('women')">Women</button>
     </div>
 
-    <!-- Back to calculator -->
     <button onclick="window.location.href='index.html'" class="btn secondary">
       Back to Calculator
     </button>
 
-    <!-- Where tables will appear -->
     <div id="tables-container"></div>
   </div>
+
+  <script>
+    // Render the initial table once the DOM and scripts are ready
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof window.generateTable === 'function') {
+        window.generateTable();
+      } else {
+        console.error('generateTable() not found. Check math.js is loading correctly.');
+      }
+    });
+  </script>
 </body>
 </html>
