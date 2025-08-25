@@ -66,3 +66,40 @@ function calculateSpacing() {
     `Recommended spacing: ${spacing} ft`;
 }
 
+//To Generate the Table
+function generateTable() {
+  const gender = document.getElementById("gender").value;
+  const tablesContainer = document.getElementById("tables-container");
+  tablesContainer.innerHTML = ""; // clear old tables
+
+  // Define speeds
+  const speedLevels = [0.6, 0.7, 0.8, 0.9, 1.0];
+
+  // Create table element
+  let table = document.createElement("table");
+
+  // Header row
+  let headerRow = "<tr><th>Steps</th>";
+  speedLevels.forEach(s => {
+    headerRow += `<th>${Math.round(s*100)}%</th>`;
+  });
+  headerRow += "</tr>";
+  table.innerHTML = headerRow;
+
+  // Build rows for steps 2–9
+  for (let steps = 2; steps <= 9; steps++) {
+    let row = `<tr><td>${steps}</td>`;
+    speedLevels.forEach(s => {
+      const spacing = calculateSpacing(gender, steps, s);
+      row += `<td>${spacing.toFixed(1)} ft</td>`;
+    });
+    row += "</tr>";
+    table.innerHTML += row;
+  }
+
+  // Append to page
+  tablesContainer.appendChild(table);
+}
+
+
+
