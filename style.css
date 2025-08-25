@@ -47,3 +47,36 @@ button:hover {
   font-weight: bold;
   color: #bb86fc;
 }
+
+.table-section {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+#tables-container {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+table {
+  border-collapse: collapse;
+  background: #1e1e2f;
+  border: 1px solid purple;
+  box-shadow: 0 0 10px rgba(128,0,128,0.5);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 0.5rem 1rem;
+  border: 1px solid purple;
+  color: white;
+}
+
+th {
+  background: purple;
+}
+
