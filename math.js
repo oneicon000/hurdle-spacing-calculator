@@ -67,8 +67,22 @@ function calculateSpacing() {
 }
 
 //To Generate the Table
+let tableGender = "men"; // default
+
+function setTableGender(gender) {
+  tableGender = gender;
+
+  // Update button styles
+  document.getElementById("men-btn").classList.remove("active");
+  document.getElementById("women-btn").classList.remove("active");
+  document.getElementById(gender + "-btn").classList.add("active");
+
+  // Refresh table if it's already displayed
+  generateTable();
+}
+
 function generateTable() {
-  const gender = document.getElementById("gender").value;
+  const gender = tableGender; // use the toggle value
   const tablesContainer = document.getElementById("tables-container");
   tablesContainer.innerHTML = ""; // clear old tables
 
@@ -100,6 +114,7 @@ function generateTable() {
   // Append to page
   tablesContainer.appendChild(table);
 }
+//____________________________________
 
 
 
