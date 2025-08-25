@@ -9,51 +9,8 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#6a0dad">
 
-  <!-- Simple Dark Theme Styling -->
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #121212; /* Dark background */
-      color: #eee;              /* Light text */
-      text-align: center;
-      padding: 20px;
-    }
-    h1 {
-      color: #bb86fc; /* Purple accent for headers */
-    }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-size: 1.1em;
-    }
-    select {
-      padding: 10px;
-      border-radius: 8px;
-      margin-top: 5px;
-      background-color: #1e1e1e;
-      color: #eee;
-      border: 1px solid #6a0dad;
-    }
-    button {
-      margin-top: 20px;
-      padding: 12px 24px;
-      border: none;
-      border-radius: 10px;
-      background-color: #6a0dad;
-      color: white;
-      font-size: 1.2em;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #8a2be2;
-    }
-    #result {
-      margin-top: 20px;
-      font-size: 1.4em;
-      font-weight: bold;
-      color: #bb86fc;
-    }
-  </style>
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1>Hurdle Spacing Calculator</h1>
@@ -94,76 +51,8 @@
   <!-- Output -->
   <div id="result"></div>
 
-  <script>
-    /*
-     ===============================
-     HURDLE SPACING MATH ENGINE
-     ===============================
-
-     This section is the core logic that determines the hurdle spacing
-     based on:
-       - Number of steps
-       - Speed (% of race pace)
-       - Gender (men/women)
-
-     You can edit the math here without touching the dropdowns or styling.
-    */
-
-    function calculateSpacing() {
-      const steps = parseInt(document.getElementById("steps").value);
-      const speed = parseFloat(document.getElementById("speed").value);
-      const gender = document.getElementById("gender").value;
-
-      // ---------------------------
-      // 1. Base Reference Anchors
-      // ---------------------------
-      // These are the "known" distances at 100% speed (race pace).
-      // Adjust hurdleStep if you want to tweak how much space is
-      // consumed by the hurdle clearance itself.
-      let baseSpacing, hurdleStep;
-      if (gender === "men") {
-        baseSpacing = 30;   // 3-step at 100% speed
-        hurdleStep = 8;     // hurdle clearance (adjustable)
-      } else {
-        baseSpacing = 28;   // women
-        hurdleStep = 7;
-      }
-
-      // ---------------------------
-      // 2. Calculate stride length
-      // ---------------------------
-      // Effective running space = hurdle spacing - hurdle step.
-      // Stride length = that space divided by # of steps.
-      let strideLength = (baseSpacing - hurdleStep) / 3; // stride @ 100% for 3-step
-
-      // ---------------------------
-      // 3. Scale stride with speed
-      // ---------------------------
-      // Assume stride length scales linearly with speed %.
-      let scaledStride = strideLength * (speed / 1.0);
-
-      // ---------------------------
-      // 4. Rebuild hurdle spacing
-      // ---------------------------
-      // For N steps: total spacing = hurdle step + stride * steps.
-      let spacing = hurdleStep + scaledStride * steps;
-
-      // Round nicely
-      spacing = spacing.toFixed(1);
-
-      // Display result
-      document.getElementById("result").innerText =
-        `Recommended spacing: ${spacing} ft`;
-    }
-
-    // ---------------------------
-    // 5. Service Worker Registration
-    // ---------------------------
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js')
-        .then(() => console.log('Service Worker registered'))
-        .catch(err => console.log('SW registration failed:', err));
-    }
-  </script>
+  <!-- Scripts -->
+  <script src="math.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
