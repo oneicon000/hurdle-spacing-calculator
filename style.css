@@ -80,3 +80,31 @@ th {
   background: purple;
 }
 
+.gender-toggle {
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.toggle-btn {
+  background: #2a2a3d;
+  border: 1px solid purple;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.toggle-btn:hover {
+  background: purple;
+}
+
+.toggle-btn.active {
+  background: purple;
+  font-weight: bold;
+}
+
+
+
