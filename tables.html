@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hurdle Spacing Tables</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="math.js" defer></script>
+</head>
+<body onload="generateTable()">
+  <div class="container">
+    <h1>Hurdle Spacing Tables</h1>
+
+    <!-- Gender toggle -->
+    <div class="gender-toggle">
+      <button id="men-btn" class="toggle-btn active" onclick="setTableGender('men')">Men</button>
+      <button id="women-btn" class="toggle-btn" onclick="setTableGender('women')">Women</button>
+    </div>
+
+    <!-- Back to calculator -->
+    <button onclick="window.location.href='index.html'" class="btn secondary">
+      Back to Calculator
+    </button>
+
+    <!-- Where tables will appear -->
+    <div id="tables-container"></div>
+  </div>
+</body>
+</html>
