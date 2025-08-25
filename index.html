@@ -1,76 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Hurdle Spacing Calculator</title>
-
-  <!-- Manifest & Theme setup for PWA -->
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#6a0dad">
-
-  <!-- Stylesheet -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
+  <script src="math.js" defer></script>
 </head>
 <body>
-  <h1>Hurdle Spacing Calculator</h1>
+  <div class="container">
+    <h1>Hurdle Spacing Calculator</h1>
 
-  <!-- Step count dropdown -->
-  <label for="steps">Number of Steps Between Hurdles:</label>
-  <select id="steps">
-    <option value="2">2</option>
-    <option value="3">3</option>
-    <option value="4">4</option>
-    <option value="5">5</option>
-    <option value="6">6</option>
-    <option value="7">7</option>
-    <option value="8">8</option>
-    <option value="9">9</option>
-  </select>
+    <label for="gender">Gender:</label>
+    <select id="gender">
+      <option value="men">Men</option>
+      <option value="women">Women</option>
+    </select>
 
-  <!-- Speed dropdown -->
-  <label for="speed">Speed (% of race pace):</label>
-  <select id="speed">
-    <option value="0.6">60%</option>
-    <option value="0.7">70%</option>
-    <option value="0.8">80%</option>
-    <option value="0.9">90%</option>
-    <option value="1.0">100%</option>
-  </select>
+    <label for="steps">Number of Steps:</label>
+    <select id="steps">
+      <option value="2">2</option>
+      <option value="3" selected>3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+    </select>
 
-  <!-- Gender dropdown -->
-  <label for="gender">Gender:</label>
-  <select id="gender">
-    <option value="men">Men</option>
-    <option value="women">Women</option>
-  </select>
+    <label for="speed">Speed:</label>
+    <select id="speed">
+      <option value="0.6">60%</option>
+      <option value="0.7">70%</option>
+      <option value="0.8">80%</option>
+      <option value="0.9">90%</option>
+      <option value="1.0" selected>100%</option>
+    </select>
 
-  <br>
-  <button onclick="calculateSpacing()">Calculate Spacing</button>
+    <button onclick="runCalculator()" class="btn">Calculate</button>
 
-  <!-- Output -->
-  <div id="result"></div>
+    <div id="result" class="result-box"></div>
 
-  <!-- for the table view-->
-  <section class="table-section">
-    <h2>Spacing Tables</h2>
-  
-    <!-- Gender toggle just for table view -->
-    <div class="gender-toggle">
-      <button id="men-btn" class="toggle-btn active" onclick="setTableGender('men')">Men</button>
-      <button id="women-btn" class="toggle-btn" onclick="setTableGender('women')">Women</button>
-    </div>
-  
-    <button onclick="generateTable()" class="btn">Show Tables</button>
-    <div id="tables-container"></div>
-  </section>
-  <!-- for the table view-->
-
-
-  <!-- Scripts -->
-  <script src="math.js"></script>
-  <script src="app.js"></script>
+    <!-- Button to go to tables page -->
+    <button onclick="window.location.href='tables.html'" class="btn secondary">
+      Show Tables
+    </button>
+  </div>
 </body>
 </html>
-
-
