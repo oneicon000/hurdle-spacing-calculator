@@ -31,7 +31,7 @@
     </select>
 
     <label for="pattern">Step Pattern (e.g., 335 or 5335):</label>
-    <input type="number" id="pattern" class="pattern-input" placeholder="Enter digits only" />
+    <input type="number" id="pattern" class="pattern-input" placeholder="Enter digits only" step="1" pattern="\d*" />
 
     <button onclick="runMapping()" class="btn">Generate Map</button>
 
@@ -43,4 +43,5 @@
   </div>
 </body>
 </html>
+
 
