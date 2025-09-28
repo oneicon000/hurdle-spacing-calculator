@@ -128,6 +128,46 @@ window.generateTable = generateTable;
 window.setTableGender = setTableGender;
 window.calculateSpacing = calculateSpacing; // handy for console testing
 
+// ... keep all your existing code above ...
+
+// ----------------------------------------------------
+// MAPPING: generate hurdle placements from pattern
+// ----------------------------------------------------
+function runMapping() {
+  const gender = document.getElementById("map-gender").value;
+  const speed = parseFloat(document.getElementById("map-speed").value);
+  const pattern = document.getElementById("pattern").value;
+
+  if (!/^[0-9]+$/.test(pattern)) {
+    alert("Please enter digits only (e.g., 335 or 5335).");
+    return;
+  }
+
+  let positions = [0]; // starting line
+  let total = 0;
+
+  for (let char of pattern) {
+    const steps = parseInt(char, 10);
+    const spacing = calculateSpacing(gender, steps, speed);
+    total += spacing;
+    positions.push(total);
+  }
+
+  // Format vertical output
+  let output = positions.map((pos, i) => `${i+1}H  ${pos.toFixed(1)} ft`).join("<br>");
+
+  const resultEl = document.getElementById("map-result");
+  if (resultEl) {
+    resultEl.innerHTML = output;
+  } else {
+    console.error("#map-result element not found.");
+  }
+}
+
+window.runMapping = runMapping;
+
+
+
 
 
 
