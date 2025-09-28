@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hurdle Mapping</title>
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#6a0dad">
+
+  <link rel="stylesheet" href="style.css" />
+  <script src="math.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Hurdle Mapping Tool</h1>
+
+    <label for="map-gender">Gender:</label>
+    <select id="map-gender">
+      <option value="men">Men</option>
+      <option value="women">Women</option>
+    </select>
+
+    <label for="map-speed">Speed:</label>
+    <select id="map-speed">
+      <option value="0.6">60%</option>
+      <option value="0.7">70%</option>
+      <option value="0.8">80%</option>
+      <option value="0.9">90%</option>
+      <option value="1.0" selected>100%</option>
+    </select>
+
+    <label for="pattern">Step Pattern (e.g., 335 or 5335):</label>
+    <input type="text" id="pattern" placeholder="Enter digits only" />
+
+    <button onclick="runMapping()" class="btn">Generate Map</button>
+
+    <div id="map-result" class="result-box"></div>
+
+    <button onclick="window.location.href='index.html'" class="btn secondary">
+      Back to Calculator
+    </button>
+  </div>
+</body>
+</html>
