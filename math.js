@@ -154,7 +154,7 @@ function runMapping() {
   }
 
   // Format vertical output
-  let output = positions.map((pos, i) => `${i+1}H  ${pos.toFixed(1)} ft`).join("<br>");
+  let output = positions.map((pos, i) => `${i+1}H:  ${pos.toFixed(1)} ft`).join("<br>");
 
   const resultEl = document.getElementById("map-result");
   if (resultEl) {
@@ -165,6 +165,7 @@ function runMapping() {
 }
 
 window.runMapping = runMapping;
+
 
 
 
