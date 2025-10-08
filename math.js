@@ -18,7 +18,7 @@ let tableGender = "men"; // default for the tables page
 // ---------------------------------------------
 // CORE MATH: tweak this to change your model
 // ---------------------------------------------
-function calculateSpacing(gender, steps, speed) {
+function calculateSpacing(gender, steps, speed, frequency = 1) {
   let baseSpacing, hurdleStep;
   if (gender === "men") {
     baseSpacing = 30;   // base 3-step spacing at 100%
@@ -32,7 +32,7 @@ function calculateSpacing(gender, steps, speed) {
   let strideLength = (baseSpacing - hurdleStep) / 3;
 
   // Scale stride with speed
-  let scaledStride = strideLength * speed;
+  let scaledStride = strideLength * speed / frequency;
 
   // (currently not scaling hurdle step – but could adjust here later)
   // SCALING BY HALF let scaledHurdleStep = hurdleStep * ((1+speed) / 2);
@@ -55,8 +55,10 @@ function runCalculator() {
   const gender = document.getElementById("gender").value;
   const steps = parseInt(document.getElementById("steps").value, 10);
   const speed = parseFloat(document.getElementById("speed").value);
+  const frequency = parseFloat(document.getElementById("frequency").value);
 
-  const spacing = calculateSpacing(gender, steps, speed);
+
+  const spacing = calculateSpacing(gender, steps, speed, frequency);
 
   const resultEl = document.getElementById("result");
   if (resultEl) {
@@ -137,6 +139,8 @@ function runMapping() {
   const gender = document.getElementById("map-gender").value;
   const speed = parseFloat(document.getElementById("map-speed").value);
   const pattern = document.getElementById("pattern").value;
+  const frequency = parseFloat(document.getElementById("frequency").value);
+
 
   if (!/^[0-9]+$/.test(pattern)) {
     alert("Please enter digits only (e.g., 335 or 5335).");
@@ -148,7 +152,7 @@ function runMapping() {
 
   for (let char of pattern) {
     const steps = parseInt(char, 10);
-    const spacing = calculateSpacing(gender, steps, speed);
+    const spacing = calculateSpacing(gender, steps, speed, frequency);
     total += spacing;
     positions.push(total);
   }
@@ -165,6 +169,7 @@ function runMapping() {
 }
 
 window.runMapping = runMapping;
+
 
 
 
