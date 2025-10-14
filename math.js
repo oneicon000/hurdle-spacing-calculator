@@ -130,7 +130,7 @@ window.generateTable = generateTable;
 window.setTableGender = setTableGender;
 window.calculateSpacing = calculateSpacing; // handy for console testing
 
-// ... keep all your existing code above ...
+
 
 // ----------------------------------------------------
 // MAPPING: generate hurdle placements from pattern
@@ -141,7 +141,6 @@ function runMapping() {
   const pattern = document.getElementById("pattern").value;
   const frequency = parseFloat(document.getElementById("frequency").value);
 
-
   if (!/^[0-9]+$/.test(pattern)) {
     alert("Please enter digits only (e.g., 335 or 5335).");
     return;
@@ -150,6 +149,10 @@ function runMapping() {
   let positions = [0]; // starting line
   let total = 0;
 
+  // --- NEW: regulation spacing constants ---
+  const regSpacing = gender === "men" ? 30.0 : 27.9;
+
+  // --- build hurdle positions ---
   for (let char of pattern) {
     const steps = parseInt(char, 10);
     const spacing = calculateSpacing(gender, steps, speed, frequency);
@@ -157,9 +160,47 @@ function runMapping() {
     positions.push(total);
   }
 
-  // Format vertical output
-  let output = positions.map((pos, i) => `${i+1}H:  ${pos.toFixed(1)} ft`).join("<br>");
+  // --- NEW: Build formatted table output ---
+  let output = `
+    <p><em>Note: Place the first hurdle on the first regulation mark (H1). 
+    Offsets show distance from the nearest regulation hurdle mark.</em></p>
+    <table class="map-table">
+      <tr><th>Hurdle</th><th>Distance (ft)</th><th>Offset vs Reg Mark</th></tr>
+  `;
 
+  positions.forEach((dist, i) => {
+    const markNum = i + 1;
+    let offset;
+
+    if (i === 0) {
+      // first hurdle always on first regulation mark
+      offset = "On H1 (start mark)";
+    } else {
+      const nearestMark = Math.round(dist / regSpacing) * regSpacing;
+      const diff = dist - nearestMark;
+      const nearestMarkNum = Math.round(dist / regSpacing) + 1; // e.g. H2, H3, etc.
+
+      if (Math.abs(diff) < 0.5) {
+        offset = `On H${nearestMarkNum}`;
+      } else if (diff > 0) {
+        offset = `+${diff.toFixed(1)}' (past H${nearestMarkNum})`;
+      } else {
+        offset = `${diff.toFixed(1)}' (short of H${nearestMarkNum})`;
+      }
+    }
+
+    output += `
+      <tr>
+        <td>H${markNum}</td>
+        <td>${dist.toFixed(1)}</td>
+        <td>${offset}</td>
+      </tr>
+    `;
+  });
+
+  output += "</table>";
+
+  // --- inject result ---
   const resultEl = document.getElementById("map-result");
   if (resultEl) {
     resultEl.innerHTML = output;
@@ -169,6 +210,8 @@ function runMapping() {
 }
 
 window.runMapping = runMapping;
+
+
 
 
 
