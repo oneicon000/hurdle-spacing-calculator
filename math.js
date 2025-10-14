@@ -15,6 +15,30 @@
 // ---------------------------
 let tableGender = "men"; // default for the tables page
 
+// ---------------------------
+// GLOBAL: unit system setting
+// ---------------------------
+let unitSystem = localStorage.getItem("unitSystem") || "imperial"; // default
+
+function toggleUnits() {
+  unitSystem = unitSystem === "imperial" ? "metric" : "imperial";
+  localStorage.setItem("unitSystem", unitSystem);
+  alert(`Switched to ${unitSystem === "imperial" ? "Feet & Inches" : "Meters"} display.`);
+  // Optionally re-run current calculation if on calculator page
+  if (document.getElementById("result")) runCalculator();
+  if (document.getElementById("map-result")) runMapping();
+}
+
+// Conversion helpers
+function metersToFeet(m) { return m * 3.28084; }
+//function feetToMeters(ft) { return ft / 3.28084; }
+
+// Display helpers
+function formatMeters(metersValue) {
+  return `${metersValue.toFixed(2)} m`;
+}
+// ----------------------------------
+
 // Converts a decimal number in feet to "X ft Y in" format
 function formatFeetInches(feetValue) {
   const totalInches = Math.round(feetValue * 12);
@@ -29,11 +53,11 @@ function formatFeetInches(feetValue) {
 function calculateSpacing(gender, steps, speed, frequency = 1) {
   let baseSpacing, hurdleStep;
   if (gender === "men") {
-    baseSpacing = 30;   // base 3-step spacing at 100%
-    hurdleStep = 12;     // hurdle clearance distance
+    baseSpacing = 9.14;   // base 3-step spacing at 100%
+    hurdleStep = 3.35;     // based on ralph Manns findings for best elite hurdlers
   } else { // Women
-    baseSpacing = 28;
-    hurdleStep = 10.5;
+    baseSpacing = 8.50;
+    hurdleStep = 2.95;    // based on ralph Manns findings for best elite hurdlers
   }
 
   // Stride length at 100% (for 3-step pattern)
@@ -41,19 +65,14 @@ function calculateSpacing(gender, steps, speed, frequency = 1) {
 
   // Scale stride with speed
   let scaledStride = strideLength * speed / frequency;
-
-  // (currently not scaling hurdle step – but could adjust here later)
-  // SCALING BY HALF let scaledHurdleStep = hurdleStep * ((1+speed) / 2);
   let scaledHurdleStep = hurdleStep * speed
-
   // Recommended Spacing
   let spacing = scaledHurdleStep + (scaledStride * steps)
  
   // See the console (inspect) in the browser
-  console.log({gender, steps, speed, scaledHurdleStep, scaledStride, spacing});
+  console.log({gender, steps, speed, frequency, scaledHurdleStep, scaledStride, spacing});
  
-  // Final spacing formula
-  return spacing;
+  return spacing; //this returns meters
 }
 
 // ----------------------------------------------------
@@ -70,7 +89,17 @@ function runCalculator() {
 
   const resultEl = document.getElementById("result");
   if (resultEl) {
-    resultEl.textContent = `Recommended spacing: ${formatFeetInches(spacing)}`;
+
+   // new with metric toggle
+    let displayText = "";
+    if (unitSystem === "imperial") {
+      displayText = formatFeetInches(metersToFeet(spacing));
+    } else {
+      displayText = formatMeters(spacing);
+    }
+    resultEl.textContent = `Recommended spacing: ${displayText}`;
+    //-----------------
+   
   } else {
     console.error('#result element not found.');
   }
@@ -158,7 +187,7 @@ function runMapping() {
   let total = 0;
 
   // --- NEW: regulation spacing constants ---
-  const regSpacing = gender === "men" ? 30.0 : 27.9;
+  const regSpacing = gender === "men" ? 9.14 : 8.50; // in meters
 
   // --- build hurdle positions ---
   for (let char of pattern) {
@@ -185,6 +214,18 @@ function runMapping() {
     } else {
       const nearestMark = Math.round(dist / regSpacing) * regSpacing;
       const diff = dist - nearestMark;
+      let diffDisplay;  // this will hold something like "+1 ft 3 in" or "-0.15 m"
+ 
+      // Check which unit system we’re using
+      if (unitSystem === "imperial") {
+        const feetDiff = metersToFeet(diff);  // convert to feet
+        const sign = feetDiff > 0 ? "+" : feetDiff < 0 ? "−" : ""; // display + or −
+        diffDisplay = `${sign}${formatFeetInches(Math.abs(feetDiff))}`;
+      } else {
+        const sign = diff > 0 ? "+" : diff < 0 ? "−" : "";
+        diffDisplay = `${sign}${formatMeters(Math.abs(diff))}`;
+      }
+
       const nearestMarkNum = Math.round(dist / regSpacing) + 1;
       const sign = diff >= 0 ? "+" : "–";
       const direction = diff >= 0 ? "past" : "short of";
@@ -199,7 +240,11 @@ function runMapping() {
     output += `
       <tr>
         <td>H${markNum}</td>
-        <td>${formatFeetInches(dist)}</td>
+        <td>${
+          unitSystem === "imperial"
+            ? formatFeetInches(metersToFeet(dist))
+            : formatMeters(dist)
+        }</td>
         <td>${offset}</td>
       </tr>
     `;
@@ -218,6 +263,7 @@ function runMapping() {
 }
 
 window.runMapping = runMapping;
+
 
 
 
