@@ -15,6 +15,14 @@
 // ---------------------------
 let tableGender = "men"; // default for the tables page
 
+// Converts a decimal number in feet to "X ft Y in" format
+function formatFeetInches(feetValue) {
+  const totalInches = Math.round(feetValue * 12);
+  const feet = Math.floor(totalInches / 12);
+  const inches = totalInches % 12;
+  return `${feet} ft ${inches} in`;
+}
+
 // ---------------------------------------------
 // CORE MATH: tweak this to change your model
 // ---------------------------------------------
@@ -210,6 +218,7 @@ function runMapping() {
 }
 
 window.runMapping = runMapping;
+
 
 
 
