@@ -72,7 +72,7 @@ function calculateSpacing(gender, steps, speed, frequency = 1) {
   // See the console (inspect) in the browser
   console.log({gender, steps, speed, frequency, scaledHurdleStep, scaledStride, spacing});
  
-  return spacing; //this returns meters
+  return spacing; //this returns meters (not rounded)
 }
 
 // ----------------------------------------------------
@@ -183,7 +183,7 @@ function runMapping() {
     return;
   }
 
-  let positions = [0]; // starting line
+  let positions = [0]; // first hurdle
   let total = 0;
 
   // --- NEW: regulation spacing constants ---
@@ -217,6 +217,7 @@ function runMapping() {
     if (i === 0) {
       offset = "On H1 (start mark)";
     } else {
+     //----------------Calculating the offset---------------
       const nearestMark = Math.round(dist / regSpacing) * regSpacing;
       const diff = dist - nearestMark;
       let diffDisplay;  // this will hold something like "+1 ft 3 in" or "-0.15 m"
@@ -234,11 +235,12 @@ function runMapping() {
       const nearestMarkNum = Math.round(dist / regSpacing) + 1;
       const direction = diff >= 0 ? "past" : "short of";
       
-      if (Math.abs(diff) < 0.5) {
+      if (Math.abs(diff) < 0.05) {
         offset = `On H${nearestMarkNum}`;
       } else {
         offset = `${diffDisplay} (${direction} H${nearestMarkNum})`;
       }
+     //----------------Calculating the offset---------------
     }
   
     output += `
@@ -267,6 +269,7 @@ function runMapping() {
 }
 
 window.runMapping = runMapping;
+
 
 
 
