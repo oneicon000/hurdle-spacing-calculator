@@ -70,7 +70,7 @@ function runCalculator() {
 
   const resultEl = document.getElementById("result");
   if (resultEl) {
-    resultEl.textContent = `Recommended spacing: ${spacing.toFixed(1)} ft`;
+    resultEl.textContent = `Recommended spacing: ${formatFeetInches(spacing)}`;
   } else {
     console.error('#result element not found.');
   }
@@ -179,32 +179,32 @@ function runMapping() {
   positions.forEach((dist, i) => {
     const markNum = i + 1;
     let offset;
-
+  
     if (i === 0) {
-      // first hurdle always on first regulation mark
       offset = "On H1 (start mark)";
     } else {
       const nearestMark = Math.round(dist / regSpacing) * regSpacing;
       const diff = dist - nearestMark;
-      const nearestMarkNum = Math.round(dist / regSpacing) + 1; // e.g. H2, H3, etc.
-
+      const nearestMarkNum = Math.round(dist / regSpacing) + 1;
+      const sign = diff >= 0 ? "+" : "–";
+      const direction = diff >= 0 ? "past" : "short of";
+  
       if (Math.abs(diff) < 0.5) {
         offset = `On H${nearestMarkNum}`;
-      } else if (diff > 0) {
-        offset = `+${diff.toFixed(1)}' (past H${nearestMarkNum})`;
       } else {
-        offset = `${diff.toFixed(1)}' (short of H${nearestMarkNum})`;
+        offset = `${sign}${formatFeetInches(Math.abs(diff))} (${direction} H${nearestMarkNum})`;
       }
     }
-
+  
     output += `
       <tr>
         <td>H${markNum}</td>
-        <td>${dist.toFixed(1)}</td>
+        <td>${formatFeetInches(dist)}</td>
         <td>${offset}</td>
       </tr>
     `;
   });
+
 
   output += "</table>";
 
@@ -218,6 +218,7 @@ function runMapping() {
 }
 
 window.runMapping = runMapping;
+
 
 
 
