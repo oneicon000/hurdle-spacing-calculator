@@ -131,3 +131,29 @@ th {
   text-align: center;
 }
 
+/* -------------------------------
+   NEW: Mapping Table Enhancements
+--------------------------------*/
+.map-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+}
+
+.map-table th,
+.map-table td {
+  border: 1px solid purple;
+  padding: 0.6rem;
+  text-align: center;
+}
+
+.map-table th {
+  background: #3c1361;
+  color: white;
+}
+
+.map-table td {
+  background: #2a2a3d;
+}/* ---------end mapping---------- */
+
+
