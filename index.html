@@ -64,8 +64,18 @@
       Hurdle Mapping
     </button>
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const label = document.getElementById("unit-label");
+      if (label) label.textContent = localStorage.getItem("unitSystem") || "imperial";
+    });
+  </script>
+
+  
 </body>
 </html>
+
 
 
 
