@@ -198,12 +198,17 @@ function runMapping() {
   }
 
   // --- NEW: Build formatted table output ---
+  // Decide which label to show based on the current unit system
+  const distanceHeader =
+    unitSystem === "imperial" ? "Distance (ft & in)" : "Distance (m)";
+  
   let output = `
     <p><em>Note: Place the first hurdle on the first regulation mark (H1). 
     Offsets show distance from the nearest regulation hurdle mark.</em></p>
     <table class="map-table">
-      <tr><th>Hurdle</th><th>Distance (ft)</th><th>Offset vs Reg Mark</th></tr>
+      <tr><th>Hurdle</th><th>${distanceHeader}</th><th>Offset vs Reg Mark</th></tr>
   `;
+
 
   positions.forEach((dist, i) => {
     const markNum = i + 1;
@@ -227,13 +232,12 @@ function runMapping() {
       }
 
       const nearestMarkNum = Math.round(dist / regSpacing) + 1;
-      const sign = diff >= 0 ? "+" : "–";
       const direction = diff >= 0 ? "past" : "short of";
-  
+      
       if (Math.abs(diff) < 0.5) {
         offset = `On H${nearestMarkNum}`;
       } else {
-        offset = `${sign}${formatFeetInches(Math.abs(diff))} (${direction} H${nearestMarkNum})`;
+        offset = `${diffDisplay} (${direction} H${nearestMarkNum})`;
       }
     }
   
@@ -263,6 +267,7 @@ function runMapping() {
 }
 
 window.runMapping = runMapping;
+
 
 
 
