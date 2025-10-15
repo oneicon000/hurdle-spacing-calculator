@@ -23,11 +23,22 @@ let unitSystem = localStorage.getItem("unitSystem") || "imperial"; // default
 function toggleUnits() {
   unitSystem = unitSystem === "imperial" ? "metric" : "imperial";
   localStorage.setItem("unitSystem", unitSystem);
-  alert(`Switched to ${unitSystem === "imperial" ? "Feet & Inches" : "Meters"} display.`);
-  // Optionally re-run current calculation if on calculator page
+
+  const label = document.getElementById("unitLabel");
+  const toggle = document.getElementById("unitToggle");
+
+  if (unitSystem === "imperial") {
+    label.textContent = "Imperial";
+    toggle.checked = false;
+  } else {
+    label.textContent = "Metric";
+    toggle.checked = true;
+  }
+
   if (document.getElementById("result")) runCalculator();
   if (document.getElementById("map-result")) runMapping();
 }
+
 
 // Conversion helpers
 function metersToFeet(m) { return m * 3.28084; }
@@ -270,6 +281,21 @@ function runMapping() {
 
 window.runMapping = runMapping;
 
+// Initialize toggle position on load
+window.addEventListener("DOMContentLoaded", () => {
+  const label = document.getElementById("unitLabel");
+  const toggle = document.getElementById("unitToggle");
+
+  if (label && toggle) {
+    if (unitSystem === "metric") {
+      label.textContent = "Metric";
+      toggle.checked = true;
+    } else {
+      label.textContent = "Imperial";
+      toggle.checked = false;
+    }
+  }
+}); //-----------------------
 
 
 
