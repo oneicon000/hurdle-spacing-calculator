@@ -154,12 +154,13 @@ th {
 
 .map-table td {
   background: #2a2a3d;
-}/* ---------end mapping---------- */
+}
 
+/* ---------toggle switch---------- */
 .toggle-square {
   position: relative;
   display: inline-block;
-  width: 100px;
+  padding: 1rm;
   height: 40px;
 }
 .toggle-square input {
@@ -191,17 +192,16 @@ th {
 .slider-square .label-on {
   opacity: 0;
 }
-
 .toggle-square input:checked + .slider-square {
   background-color: purple;
 }
-
 .toggle-square input:checked + .slider-square .label-on {
   opacity: 1;
 }
 .toggle-square input:checked + .slider-square .label-off {
   opacity: 0;
 }
+
 
 
 
