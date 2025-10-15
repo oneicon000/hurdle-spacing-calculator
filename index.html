@@ -17,9 +17,12 @@
   <div class="container">
     <h1>Hurdle Spacing Calculator</h1>
     
-    <button onclick="toggleUnits()" class="btn secondary" style="margin-bottom: 1rem;">
-      Toggle Units (Current: <span id="unit-label"></span>)
-    </button>
+    <label class="switch" style="margin-bottom: 1rem;">
+      <input type="checkbox" id="unitToggle" onchange="toggleUnits()">
+      <span class="slider">
+        <span id="unitLabel">Imperial</span>
+      </span>
+    </label>
 
     <label for="gender">Gender:</label>
     <select id="gender">
@@ -75,6 +78,7 @@
   
 </body>
 </html>
+
 
 
 
