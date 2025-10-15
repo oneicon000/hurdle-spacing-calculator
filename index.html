@@ -17,10 +17,13 @@
   <div class="container">
     <h1>Hurdle Spacing Calculator</h1>
     
-    <label class="switch">
-      <input type="checkbox" id="unitToggle" onchange="toggleUnits()">
-      <span class="slider round"></span>
-    </label>
+    <div style="display:flex; align-items:center; justify-content:center; gap:12px; margin-top:1rem;">
+      <span id="unitLabel" style="font-weight:bold;">Imperial</span>
+      <label class="switch">
+        <input type="checkbox" id="unitToggle" onchange="toggleUnits()">
+        <span class="slider"></span>
+      </label>
+    </div>
 
 
     <label for="gender">Gender:</label>
@@ -77,6 +80,7 @@
   
 </body>
 </html>
+
 
 
 
