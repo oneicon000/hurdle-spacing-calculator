@@ -210,6 +210,31 @@ input:checked + .slider:before {
 input:focus + .slider {
   box-shadow: 0 0 4px #bb86fc;
 }
+ /* ---------------------------------------
+   Small navigation button (top right)
+--------------------------------------- */
+.top-buttons {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.small-btn {
+  background: #444;
+  border: 1px solid purple;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.small-btn:hover {
+  background: purple;
+  transform: scale(1.05);
+}
+
 
 
 
