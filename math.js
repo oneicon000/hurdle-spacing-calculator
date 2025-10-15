@@ -21,23 +21,19 @@ let tableGender = "men"; // default for the tables page
 let unitSystem = localStorage.getItem("unitSystem") || "imperial"; // default
 
 function toggleUnits() {
-  unitSystem = unitSystem === "imperial" ? "metric" : "imperial";
-  localStorage.setItem("unitSystem", unitSystem);
-
-  const label = document.getElementById("unitLabel");
   const toggle = document.getElementById("unitToggle");
+  const label = document.getElementById("unitLabel");
 
-  if (unitSystem === "imperial") {
-    label.textContent = "Imperial";
-    toggle.checked = false;
-  } else {
-    label.textContent = "Metric";
-    toggle.checked = true;
-  }
+  // Flip and save preference
+  unitSystem = toggle.checked ? "metric" : "imperial";
+  localStorage.setItem("unitSystem", unitSystem);
+  label.textContent = toggle.checked ? "Metric" : "Imperial";
 
+  // Rerun calculations
   if (document.getElementById("result")) runCalculator();
   if (document.getElementById("map-result")) runMapping();
 }
+
 
 
 // Conversion helpers
@@ -296,6 +292,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 }); //-----------------------
+
 
 
 
