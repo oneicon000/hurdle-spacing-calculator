@@ -157,50 +157,41 @@ th {
 }
 
 /* ---------toggle switch---------- */
-.toggle-square {
+.toggle-puck {
   position: relative;
   display: inline-block;
-  width: 300px;
-  height: 40px;
+  width: 80px;
+  height: 36px;
 }
-.toggle-square input {
+.toggle-puck input {
   opacity: 0;
   width: 0;
   height: 0;
 }
-.slider-square {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: #444;
-  border-radius: 6px;
+.track {
+  position: relative;
+  background-color: #555;
+  width: 100%; height: 100%;
+  border-radius: 18px;
   transition: background-color 0.3s;
-  overflow: hidden;
-  display: flex;
 }
-
-.slider-square .label-off,
-.slider-square .label-on {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: bold;
-  transition: opacity 0.3s;
+.puck {
+  position: absolute;
+  width: 30px; height: 30px;
+  background-color: white;
+  border-radius: 50%;
+  top: 3px; left: 3px;
+  transition: transform 0.3s, box-shadow 0.2s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }
-
-.slider-square .label-on {
-  opacity: 0;
-}
-.toggle-square input:checked + .slider-square {
+.toggle-puck input:checked + .track {
   background-color: purple;
 }
-.toggle-square input:checked + .slider-square .label-on {
-  opacity: 1;
+.toggle-puck input:checked + .track .puck {
+  transform: translateX(44px); /* track width minus puck width minus padding */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
-.toggle-square input:checked + .slider-square .label-off {
-  opacity: 0;
-}
+
 
 
 
