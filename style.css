@@ -160,7 +160,7 @@ th {
 .toggle-square {
   position: relative;
   display: inline-block;
-  padding: 1rm;
+  width: 300px;
   height: 40px;
 }
 .toggle-square input {
@@ -201,6 +201,7 @@ th {
 .toggle-square input:checked + .slider-square .label-off {
   opacity: 0;
 }
+
 
 
 
